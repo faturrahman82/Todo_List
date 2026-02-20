@@ -1,0 +1,123 @@
+<!doctype html>
+<html lang="id">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Daftar Tugas</title>
+    <!-- CSS link required (one file only) -->
+    <link rel="stylesheet" href="css/style.css" />
+    <!-- Google Fonts for a cleaner look -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap"
+      rel="stylesheet" />
+  </head>
+
+  <body>
+    <div class="app-wrapper">
+      <header class="app-header">
+        <div class="header-titles">
+          <h1>Daftar Tugas</h1>
+          <p class="subtitle" id="dateSubtitle">Atur alur kerja Anda</p>
+        </div>
+        <div class="stats-overview">
+          <!-- Text-only stat elements -->
+          <div class="stat-pill" title="Selesai">
+            <span class="stat-label">Selesai:</span>
+            <span id="completedTasks" class="stat-value">0</span>
+          </div>
+          <div class="stat-pill" title="Tertunda">
+            <span class="stat-label">Tertunda:</span>
+            <span id="pendingTasks" class="stat-value">0</span>
+          </div>
+          <div class="stat-pill" title="Total">
+            <span class="stat-label">Total:</span>
+            <span id="totalTasks" class="stat-value">0</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- Progress (Simple Bar) -->
+      <div class="progress-container">
+        <div class="progress-info">
+          <span>Progres Tugas</span>
+          <span id="progressPercentage">0%</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="progressBar" style="width: 0%"></div>
+        </div>
+      </div>
+
+      <!-- Form Add Task -->
+      <form id="addTaskForm" class="task-form">
+        <div class="input-wrapper text-input">
+          <input
+            type="text"
+            id="taskNameInput"
+            placeholder="Apa yang perlu dilakukan?"
+            autocomplete="off"
+            required />
+        </div>
+        <div class="input-wrapper date-input">
+          <input type="date" id="taskDateInput" required />
+        </div>
+        <button type="submit" class="btn-submit">Tambah</button>
+      </form>
+
+      <!-- Toolbar Controls -->
+      <div class="toolbar">
+        <div class="search-wrap">
+          <!-- Removed icon, standard text input only -->
+          <input type="text" id="searchInput" placeholder="Cari tugas..." />
+        </div>
+        <div class="filter-wrap">
+          <select id="filterStatus" class="select-clean">
+            <option value="all">Semua Tugas</option>
+            <option value="pending">Tertunda</option>
+            <option value="completed">Selesai</option>
+          </select>
+          <!-- Tombol sort memakai teks saja diatur dari js -->
+          <button
+            type="button"
+            id="sortBtn"
+            class="btn-text-action"
+            title="Ubah Arah Urutan">
+            Urutkan &darr;
+          </button>
+        </div>
+      </div>
+
+      <!-- Task List Header (Labels) -->
+      <div class="list-headers">
+        <div class="col-task">Tugas</div>
+        <div class="col-date">Tenggat Waktu</div>
+        <div class="col-status">Status</div>
+        <div class="col-action">
+          <button
+            type="button"
+            id="deleteAllBtn"
+            class="btn-clean-text text-danger">
+            Hapus Semua
+          </button>
+        </div>
+      </div>
+
+      <!-- Tasks Rendering Area -->
+      <div class="task-list-container">
+        <ul id="taskListBody" class="task-list">
+          <!-- Dynamically filled with list items via script.js -->
+        </ul>
+
+        <div id="emptyState" class="empty-state">
+          <p id="emptyMessage">Tidak ada tugas ditemukan. Semua sudah beres!</p>
+        </div>
+      </div>
+
+      <footer class="app-footer">
+        <p>&copy; 2026 Maulvi. Hak Cipta Dilindungi.</p>
+      </footer>
+    </div>
+
+    <!-- js link required (one file only) -->
+    <script src="js/script.js"></script>
+  </body>
+</html>
