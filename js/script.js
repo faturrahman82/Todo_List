@@ -1,15 +1,12 @@
-// Core Variables
 const STORAGE_KEY = "minimalistTasksData";
 let tasks = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
 let currentSearch = "";
 let currentFilter = "all";
 let isAscending = true;
 
-// Define Text instead of SVG symbols
 const textSortAsc = "Urutkan &darr;";
 const textSortDesc = "Urutkan &uarr;";
 
-// DOM Retrieval
 const el = {
   form: document.getElementById("addTaskForm"),
   titleInput: document.getElementById("taskNameInput"),
@@ -29,9 +26,7 @@ const el = {
   },
 };
 
-// Application Initialization
 function initApp() {
-  // Current date subtitle
   const dateObj = new Date();
   document.getElementById("dateSubtitle").textContent =
     dateObj.toLocaleDateString("id-ID", {
@@ -40,7 +35,6 @@ function initApp() {
       day: "numeric",
     });
 
-  // Initial render
   renderApp();
   setupListeners();
 }
@@ -83,12 +77,10 @@ function setupListeners() {
 
   el.sortBtn.addEventListener("click", () => {
     isAscending = !isAscending;
-    // Gunakan tulisan textSortAsc dan textSortDesc
     el.sortBtn.innerHTML = isAscending ? textSortAsc : textSortDesc;
     renderApp();
   });
 
-  // Delete all logic via event delegation
   document.addEventListener("click", (evt) => {
     if (
       evt.target.id === "deleteAllBtn" ||
@@ -102,7 +94,6 @@ function setupListeners() {
     }
   });
 
-  // Handle Native Checkbox
   document.addEventListener("change", (evt) => {
     if (evt.target.classList.contains("checkbox-native")) {
       const taskId = evt.target.getAttribute("data-id");
@@ -111,7 +102,6 @@ function setupListeners() {
   });
 }
 
-// Global actions for onclick functions
 window.toggleTask = function (taskId) {
   tasks = tasks.map((t) =>
     t.id === taskId ? { ...t, isCompleted: !t.isCompleted } : t,
@@ -124,15 +114,12 @@ window.removeTask = function (taskId) {
   saveAndRender();
 };
 
-// State Updates
 function saveAndRender() {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(tasks));
   renderApp();
 }
 
-// Logic Display Module
 function renderApp() {
-  // 1. Process Data Filter and Search
   let filteredData = tasks.filter((task) => {
     const matchSearch = task.title.toLowerCase().includes(currentSearch);
     const matchFilter =
@@ -144,14 +131,12 @@ function renderApp() {
     return matchSearch && matchFilter;
   });
 
-  // Data Sort Time
   filteredData.sort((a, b) => {
     const timeA = new Date(a.date).getTime();
     const timeB = new Date(b.date).getTime();
     return isAscending ? timeA - timeB : timeB - timeA;
   });
 
-  // 2. Compute Metrics Logic
   const total = tasks.length;
   const completed = tasks.filter((t) => t.isCompleted).length;
   const pending = total - completed;
@@ -163,7 +148,6 @@ function renderApp() {
   el.metrics.progressText.textContent = `${progress}%`;
   el.metrics.progressBar.style.width = `${progress}%`;
 
-  // 3. Render HTML Pipeline
   el.listBody.innerHTML = "";
 
   if (filteredData.length === 0) {
@@ -183,21 +167,16 @@ function renderApp() {
       const badgeClass = task.isCompleted ? "badge-completed" : "badge-pending";
       const badgeText = task.isCompleted ? "Selesai" : "Tertunda";
 
-      // Menggunakan struktur Native Checkbox dan Teks Tombol "Delete" murni
       li.innerHTML = `
                 <div class="item-col-task task-content">
                     <input type="checkbox" class="checkbox-native" data-id="${task.id}" aria-label="Toggle Completion" ${task.isCompleted ? "checked" : ""}>
                     <span class="task-text">${task.title}</span>
                 </div>
-                <!-- Menampilkan Due Date -->
                 <div class="item-col-date item-date">${formattedDate}</div>
-                <!-- Status Badge -->
                 <div class="item-col-status">
                     <span class="status-badge ${badgeClass}">${badgeText}</span>
                 </div>
-                <!-- Action Delete -->
                 <div class="item-col-action">
-                    <!-- Menggunakan text button biasa -->
                     <button type="button" class="btn-small-text" onclick="removeTask('${task.id}')" title="Hapus Tugas">
                         Hapus
                     </button>
@@ -208,5 +187,4 @@ function renderApp() {
   }
 }
 
-// Start sequence
 window.onload = initApp;
